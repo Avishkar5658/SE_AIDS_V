@@ -1,0 +1,53 @@
+from collections import deque, defaultdict
+
+# Graph class using an adjacency list
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+
+    # Method to add an edge between two vertices (undirected)
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+        self.graph[v].append(u)
+
+    # Depth First Search (recursive)
+    def dfs(self, v, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(v)
+        print(v, end=" ")
+
+        # Recursively visit all unvisited adjacent vertices
+        for neighbor in self.graph[v]:
+            if neighbor not in visited:
+                self.dfs(neighbor, visited)
+
+    # Breadth First Search (iterative)
+    def bfs(self, start):
+        visited = set()
+        queue = deque([start])
+        visited.add(start)
+
+        while queue:
+            vertex = queue.popleft()
+            print(vertex, end=" ")
+
+            # Enqueue all unvisited neighbors
+            for neighbor in self.graph[vertex]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+# Example usage
+g = Graph()
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(1, 2)
+g.add_edge(2, 3)
+g.add_edge(3, 4)
+
+print("Depth First Search (starting from vertex 0):")
+g.dfs(0)
+
+print("\nBreadth First Search (starting from vertex 0):")
+g.bfs(0)
